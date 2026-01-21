@@ -8,6 +8,44 @@
     <meta name="theme-color" content="#ff69b4">
     <title>GloHub- The Ultimate Girls' Quiz Party Platform</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Hero section with blurred background */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/landing-page-background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(2px);
+            z-index: -2;
+            }
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 182, 217, 0.3);
+            z-index: -1;
+          }
+
+          .hero .container {
+              position: relative;
+              z-index: 1;
+          }
+</style>
 </head>
 <body class="landing-page">
    <header class="header">
@@ -25,161 +63,157 @@
     </div>
 </header>
 <div class="menu-overlay" id="menuOverlay" onclick="closeMobileMenu()"></div>
-
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h2 class="hero-title">Galentines 2.0!</h2>
-                <p class="hero-subtitle">Fun quizzes, cute avatars, and the best girls’ night in!</p>
-                <button class="btn-large" onclick="scrollToPurchase()">Get Started</button>
-            </div>
-            <div class="hero-image">
-                <div class="placeholder-image">
-                    <img src="assets/glohub.jpg" alt="Cute doll-like trio" />
-                </div>
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h2 class="hero-title">Galentines 2.0!</h2>
+            <p class="hero-subtitle">Fun quizzes, cute avatars, and the best girls' night in!</p>
+            <button class="btn-large" onclick="scrollToPurchase()">Get Started</button>
+        </div>
+        <div class="hero-image">
+            <div class="placeholder-image">
+                <img src="assets/glohub.jpg" alt="Cute doll-like trio" />
             </div>
         </div>
-    </section>
-
+    </div>
+</section>
 <section id="features" class="features">
   <div class="container">
     <h2 class="section-title">
       Why Girls Love 
       <span style="font-family: 'Brush Script MT', cursive; font-size: 45px; color:#8e0038;">GloHub</span>
     </h2>
-
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-image">
-          <img src="https://via.placeholder.com/300x180" alt="Customize Everything" />
-        </div>
-        <div class="feature-content">
-          <h3>Customize Everything</h3>
-          <p>Choose your colors, create your own questions, and make it totally yours!</p>
-        </div>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-image">
-          <img src="https://via.placeholder.com/300x180" alt="Cute Avatar Creator" />
-        </div>
-        <div class="feature-content">
-          <h3>Cute Avatar Creator</h3>
-          <p>Let your girls design adorable avatars with different hairstyles, outfits, and accessories!</p>
-        </div>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-image">
-          <img src="https://via.placeholder.com/300x180" alt="Fun Quiz Games" />
-        </div>
-        <div class="feature-content">
-          <h3>Fun Quiz Games</h3>
-          <p>Create custom quizzes just like Kahoot - perfect for ice breakers and parties!</p>
-        </div>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-image">
-          <img src="https://via.placeholder.com/300x180" alt="Spin-to-Win Wheel" />
-        </div>
-        <div class="feature-content">
-          <h3>Spin-to-Win Wheel</h3>
-          <p>Truth or dare, affirmations, fun challenges - all in a cute spinning wheel!</p>
-        </div>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-image">
-          <img src="https://via.placeholder.com/300x180" alt="Admin Dashboard" />
-        </div>
-        <div class="feature-content">
-          <h3>Admin Dashboard</h3>
-          <p>Manage everything from one place - questions, players, themes, and more!</p>
-        </div>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-image">
-          <img src="https://via.placeholder.com/300x180" alt="Easy Room Codes" />
-        </div>
-        <div class="feature-content">
-          <h3>Easy Room Codes</h3>
-          <p>Generate simple join codes so your girls can hop in instantly!</p>
-        </div>
-      </div>
+<div class="features-grid">
+  <div class="feature-card">
+    <div class="feature-image">
+      <img src="https://via.placeholder.com/300x180" alt="Customize Everything" />
+    </div>
+    <div class="feature-content">
+      <h3>Customize Everything</h3>
+      <p>Choose your colors, create your own questions, and make it totally yours!</p>
     </div>
   </div>
+
+  <div class="feature-card">
+    <div class="feature-image">
+      <img src="https://via.placeholder.com/300x180" alt="Cute Avatar Creator" />
+    </div>
+    <div class="feature-content">
+      <h3>Cute Avatar Creator</h3>
+      <p>Let your girls design adorable avatars with different hairstyles, outfits, and accessories!</p>
+    </div>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-image">
+      <img src="https://via.placeholder.com/300x180" alt="Fun Quiz Games" />
+    </div>
+    <div class="feature-content">
+      <h3>Fun Quiz Games</h3>
+      <p>Create custom quizzes just like Kahoot - perfect for ice breakers and parties!</p>
+    </div>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-image">
+      <img src="https://via.placeholder.com/300x180" alt="Spin-to-Win Wheel" />
+    </div>
+    <div class="feature-content">
+      <h3>Spin-to-Win Wheel</h3>
+      <p>Truth or dare, affirmations, fun challenges - all in a cute spinning wheel!</p>
+    </div>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-image">
+      <img src="https://via.placeholder.com/300x180" alt="Admin Dashboard" />
+    </div>
+    <div class="feature-content">
+      <h3>Admin Dashboard</h3>
+      <p>Manage everything from one place - questions, players, themes, and more!</p>
+    </div>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-image">
+      <img src="https://via.placeholder.com/300x180" alt="Easy Room Codes" />
+    </div>
+    <div class="feature-content">
+      <h3>Easy Room Codes</h3>
+      <p>Generate simple join codes so your girls can hop in instantly!</p>
+    </div>
+  </div>
+</div>
+  </div>
+</section>
+<section id="how-it-works" class="how-it-works">
+    <div class="container">
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Purchase Access</h3>
+                <p>Pay KES 649 once and get your unique admin code by email</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Set Up Your Hub</h3>
+                <p>Login with your admin code, customize your theme, and add quiz questions</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Create a Game Room</h3>
+                <p>Generate a join code and share it with your friends</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Play & Have Fun!</h3>
+                <p>Your girls join, create avatars, and play together - so much fun!</p>
+            </div>
+        </div>
+    </div>
 </section>
 
-
-    <section id="how-it-works" class="how-it-works">
-        <div class="container">
-            <h2 class="section-title">How It Works</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Purchase Access</h3>
-                    <p>Pay KES 649 once and get your unique admin code by email</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Set Up Your Hub</h3>
-                    <p>Login with your admin code, customize your theme, and add quiz questions</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Create a Game Room</h3>
-                    <p>Generate a join code and share it with your friends</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>Play & Have Fun!</h3>
-                    <p>Your girls join, create avatars, and play together - so much fun!</p>
-                </div>
+<section id="purchase" class="purchase">
+    <div class="container">
+        <div class="purchase-card">
+            <h2>Ready to Host Your Own Quiz Party?</h2>
+            <div class="price">
+                <span class="currency">KES</span>
+                <span class="amount">649</span>
             </div>
+            <ul class="purchase-features">
+                <li>Lifetime access to your admin dashboard</li>
+                <li>Unlimited quiz games</li>
+                <li>Full customization control</li>
+                <li>Unlimited players</li>
+                <li>All built-in games included</li>
+                <li>Analytics & insights</li>
+            </ul>
+            <form id="purchaseForm" class="purchase-form">
+                <input type="email" id="purchaseEmail" placeholder="Enter your email" required>
+                <button type="submit" class="btn-large">Buy Now</button>
+            </form>
+            <p class="purchase-note">You'll receive your admin code by email instantly after payment!</p>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="purchase" class="purchase">
-        <div class="container">
-            <div class="purchase-card">
-                <h2>Ready to Host Your Own Quiz Party?</h2>
-                <div class="price">
-                    <span class="currency">KES</span>
-                    <span class="amount">649</span>
-                </div>
-                <ul class="purchase-features">
-                    <li>Lifetime access to your admin dashboard</li>
-                    <li>Unlimited quiz games</li>
-                    <li>Full customization control</li>
-                    <li>Unlimited players</li>
-                    <li>All built-in games included</li>
-                    <li>Analytics & insights</li>
-                </ul>
-                <form id="purchaseForm" class="purchase-form">
-                    <input type="email" id="purchaseEmail" placeholder="Enter your email" required>
-                    <button type="submit" class="btn-large">Buy Now</button>
-                </form>
-                <p class="purchase-note">You'll receive your admin code by email instantly after payment!</p>
-            </div>
-        </div>
-    </section>
+<footer class="footer">
+    <div class="container">
+        <p>Made with love for all the amazing girls out there</p>
+        <p>&copy; 2026 GloHub. All rights reserved.</p>
+        <a href="super-admin.html" class="super-admin-link">Super Admin</a>
+    </div>
+</footer>
 
-    <footer class="footer">
-        <div class="container">
-            <p>Made with love for all the amazing girls out there</p>
-            <p>&copy; 2026 GloHub. All rights reserved.</p>
-            <a href="super-admin.html" class="super-admin-link">Super Admin</a>
-        </div>
-    </footer>
-
-    <script src="supabase.js"></script>
-    <script src="client.js"></script>
-    <script>
-        function scrollToPurchase() {
-            document.getElementById('purchase').scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
+<script src="supabase.js"></script>
+<script src="client.js"></script>
+<script>
+    function scrollToPurchase() {
+        document.getElementById('purchase').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
 </body>
 </html>
+````

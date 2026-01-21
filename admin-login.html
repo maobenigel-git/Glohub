@@ -7,11 +7,55 @@
     <meta name="theme-color" content="#ff69b4">
     <title>Admin Login - GloHub</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Blurred background image */
+        .auth-page {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-page::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/admin login background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(2px);
+            z-index: -1;
+        }
+
+        /* Add overlay for better text readability */
+        .auth-page::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 245, 248, 0.7);
+            z-index: -1;
+        }
+
+        /* Enhance auth card to stand out */
+        .auth-card {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.3) !important;
+        }
+    </style>
 </head>
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-card">
-            <h1 class="auth-logo"style="font-family: 'Brush Script MT', cursive; font-size: 45px; color:#8e0038;">GloHub</h1>
+            <h1 class="auth-logo" style="font-family: 'Brush Script MT', cursive; font-size: 45px; color:#8e0038;">GloHub</h1>
             <p class="auth-title">Welcome Back, Queen!</p>
             <p class="auth-subtitle">Enter your admin code to access your dashboard</p>
             

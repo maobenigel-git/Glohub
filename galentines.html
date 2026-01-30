@@ -323,9 +323,9 @@
         }
 
         .hero-visual img {
-            max-width: 420px;   /* adjust: 360–480px sweet spot */
+            max-width: 480px;   /* adjust: 360–480px sweet spot */
             width: 100%;
-            height: auto;
+            height: 700px;
             filter: drop-shadow(0 0 40px rgba(255, 105, 180, 0.6))
                     drop-shadow(0 0 80px rgba(155, 89, 182, 0.4));
         }
@@ -1024,9 +1024,8 @@
                 <button type="button" onclick="openPricingModal()" class="hero-cta" style="border: none; cursor: pointer;">Get Game</button>
             </div>
         </div>
-    </section>
-    
-    <!-- Pricing Modal -->
+
+        <!-- Pricing Modal -->
 <div id="pricingModal" class="modal">
     <div class="modal-overlay" onclick="closePricingModal()"></div>
     <div class="modal-content">
@@ -1093,6 +1092,9 @@
         </div>
     </div>
 </div>
+    </section>
+    
+    
 
 
     <!-- SUPABASE SDK -->
@@ -1167,29 +1169,29 @@
         let discountAmount = 0;
         const basePrice = 699;
 
-        // Modal Functions
-function openPricingModal() {
-    const modal = document.getElementById('pricingModal');
-    modal.classList.add('active');
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
+// Modal Functions - Attach to window for inline onclick access
+        window.openPricingModal = function() {
+            const modal = document.getElementById('pricingModal');
+            modal.classList.add('active');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
 
-function closePricingModal() {
-    const modal = document.getElementById('pricingModal');
-    modal.classList.remove('active');
-    setTimeout(() => {
-        modal.style.display = 'none';
-    }, 300);
-    document.body.style.overflow = 'auto';
-}
+        window.closePricingModal = function() {
+            const modal = document.getElementById('pricingModal');
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+            document.body.style.overflow = 'auto';
+        }
 
-// Close modal on Escape key
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closePricingModal();
-    }
-});
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                window.closePricingModal();
+            }
+        });
 
         // Generate Admin Code
         function generateAdminCode() {

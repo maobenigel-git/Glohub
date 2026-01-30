@@ -2488,14 +2488,13 @@ nav a:hover {
 
 .join-card {
     /* Make card slightly transparent to show background colors */
-    background: rgba(255, 255, 255, 0.95);
-    padding: 50px;
-    border-radius: 20px;
+    background:transparent;
+    padding: 30px;
+    border-radius: 10px;
     backdrop-filter: blur(10px);
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.3),
-        0 0 40px rgba(255, 79, 216, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .join-logo {
@@ -2517,25 +2516,27 @@ nav a:hover {
 /* Optional: Add glow effect to button to match galentines style */
 .join-page .btn-large {
     display: inline-block;
-            background: linear-gradient(135deg, #ff4fd8, #7b2cff);
-            border: none;
-            padding: 18px 50px;
-            border-radius: 50px;
-            color: white;
-            font-weight: 700;
-            font-size: 18px;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-            box-shadow:
-                0 0 20px rgba(255, 79, 216, 0.6),
-                0 0 40px rgba(123, 44, 255, 0.4);
-            animation: floatingGlow 3s ease-in-out infinite;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            cursor: pointer;
-            letter-spacing: 0.5px;
-            margin-top: 15px;
-            margin-bottom: 50px;
+    background: linear-gradient(135deg, #ff4fd8, #7b2cff);
+    border: none;
+    padding: 18px 50px;
+    border-radius: 50px;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 0 20px rgba(255, 79, 216, 0.6),
+        0 0 40px rgba(123, 44, 255, 0.4);
+    animation: floatingGlow 3s ease-in-out infinite;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    margin-top: 15px;
+    margin-bottom: 50px;
+    width: auto;
+     min-width: 200px;
 }
 
 .join-page .btn-large:hover {

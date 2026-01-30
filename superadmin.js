@@ -1,8 +1,24 @@
 // Super Admin Dashboard Logic
 
-const SUPER_ADMIN_PASSWORD = 'galentine2026admin'; // Change this in production!
+// Supabase Configuration
+const SUPABASE_URL = 'https://uceacvdgglhjmljqfkou.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjZWFjdmRnZ2xoam1sanFma291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk1ODExMzgsImV4cCI6MjA4NTE1NzEzOH0.jQ3kgK2jy9_NyivP5scW3wQH9u-Hfl-NBjEw0SIcWIM';
+
+// Prefer the global supabase/client from supabase.js (mock or real). Fallback to local client.
+let supabaseClient = null;
+if (typeof supabase !== 'undefined' && supabase) {
+    supabaseClient = supabase;
+} else if (window.supabase && typeof window.supabase.createClient === 'function') {
+    try {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch (e) {
+        supabaseClient = window.supabase;
+    }
+}
 
 let isAuthenticated = false;
+// Use db as the supabase client (prefers global/mock if available)
+const db = supabaseClient || (typeof supabase !== 'undefined' ? supabase : null);
 
 document.addEventListener('DOMContentLoaded', () => {
     setupLogin();
@@ -17,15 +33,41 @@ function setupLogin() {
         
         const password = document.getElementById('superAdminPassword').value;
         
-        if (password === SUPER_ADMIN_PASSWORD) {
-            isAuthenticated = true;
-            document.getElementById('superAdminLogin').style.display = 'none';
-            document.getElementById('superAdminDashboard').style.display = 'grid';
-            
-            await loadDashboard();
-        } else {
+        try {
+            // Try to authenticate against Supabase super_admins table
+            const client = supabaseClient || (typeof supabase !== 'undefined' ? supabase : null);
+            if (!client) throw new Error('Supabase not available');
+
+            const { data: superAdmin, error } = await client
+                .from('super_admins')
+                .select('*')
+                .eq('password', password)
+                .eq('is_active', true)
+                .single();
+
+            if (superAdmin && superAdmin.id) {
+                isAuthenticated = true;
+                document.getElementById('superAdminLogin').style.display = 'none';
+                document.getElementById('superAdminDashboard').style.display = 'grid';
+
+                // store session hints
+                sessionStorage.setItem('isSuperAdmin', 'true');
+                sessionStorage.setItem('superAdminId', superAdmin.id);
+                sessionStorage.setItem('superAdminName', superAdmin.name || 'Super Admin');
+                sessionStorage.setItem('superAdminCode', superAdmin.super_code || '');
+
+                await loadDashboard();
+                return;
+            }
+
+            // Fallback: if no record found, fail with message
             const errorDiv = document.getElementById('loginError');
-            errorDiv.textContent = 'Invalid password';
+            errorDiv.textContent = 'Invalid password or not authorized';
+            errorDiv.style.display = 'block';
+        } catch (err) {
+            console.error('Super admin login error:', err);
+            const errorDiv = document.getElementById('loginError');
+            errorDiv.textContent = 'Login failed. Please try again.';
             errorDiv.style.display = 'block';
         }
     });
@@ -68,14 +110,14 @@ async function loadDashboard() {
 async function loadOverview() {
     try {
         // Total clients
-        const { count: clientsCount } = await supabase
+        const { count: clientsCount } = await db
             .from('clients')
             .select('*', { count: 'exact', head: true });
         
         document.getElementById('totalClients').textContent = clientsCount || 0;
         
         // Total revenue
-        const { data: payments } = await supabase
+        const { data: payments } = await db
             .from('payments')
             .select('amount')
             .eq('status', 'completed');
@@ -85,7 +127,7 @@ async function loadOverview() {
         
         // Active sessions (last 24 hours)
         const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-        const { count: activeCount } = await supabase
+        const { count: activeCount } = await db
             .from('sessions')
             .select('*', { count: 'exact', head: true })
             .gte('created_at', yesterday);
@@ -93,7 +135,7 @@ async function loadOverview() {
         document.getElementById('activeSessions').textContent = activeCount || 0;
         
         // Total users
-        const { count: usersCount } = await supabase
+        const { count: usersCount } = await db
             .from('users')
             .select('*', { count: 'exact', head: true });
         
@@ -122,7 +164,7 @@ async function loadTabData(tabName) {
 
 async function loadClients() {
     try {
-        const { data: clients } = await supabase
+        const { data: clients } = await db
             .from('clients')
             .select('*')
             .order('created_at', { ascending: false });
@@ -137,7 +179,7 @@ async function loadClients() {
         // Get session counts for each client
         const clientsWithStats = await Promise.all(
             clients.map(async (client) => {
-                const { count } = await supabase
+                const { count } = await db
                     .from('sessions')
                     .select('*', { count: 'exact', head: true })
                     .eq('client_id', client.id);
@@ -167,7 +209,7 @@ async function loadClients() {
 
 async function loadPayments() {
     try {
-        const { data: payments } = await supabase
+        const { data: payments } = await db
             .from('payments')
             .select('*, clients(admin_email)')
             .order('timestamp', { ascending: false });
@@ -203,7 +245,7 @@ async function loadAnalytics() {
         const analyticsDiv = document.getElementById('analyticsContent');
         
         // Get client-by-client breakdown
-        const { data: clients } = await supabase
+        const { data: clients } = await db
             .from('clients')
             .select('*');
         
@@ -214,12 +256,12 @@ async function loadAnalytics() {
         
         const analyticsData = await Promise.all(
             clients.map(async (client) => {
-                const { count: sessions } = await supabase
+                const { count: sessions } = await db
                     .from('sessions')
                     .select('*', { count: 'exact', head: true })
                     .eq('client_id', client.id);
                 
-                const { count: questions } = await supabase
+                const { count: questions } = await db
                     .from('questions')
                     .select('*', { count: 'exact', head: true })
                     .eq('client_id', client.id);
@@ -270,13 +312,13 @@ async function resetClient(clientId) {
     
     try {
         // Delete sessions
-        await supabase
+        await db
             .from('sessions')
             .delete()
             .eq('client_id', clientId);
         
         // Delete questions
-        await supabase
+        await db
             .from('questions')
             .delete()
             .eq('client_id', clientId);
@@ -298,18 +340,18 @@ async function revokeAccess(clientId) {
     
     try {
         // Delete all related data
-        await supabase
+        await db
             .from('sessions')
             .delete()
             .eq('client_id', clientId);
         
-        await supabase
+        await db
             .from('questions')
             .delete()
             .eq('client_id', clientId);
         
         // Delete client
-        await supabase
+        await db
             .from('clients')
             .delete()
             .eq('id', clientId);

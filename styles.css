@@ -2441,60 +2441,119 @@ nav a:hover {
     }
 }
 
-/* Join Page */
+/* Join Page - Match Galentines Hero Background */
 .join-page {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    position: relative;
+    
+    /* Same gradient background as galentines hero */
+    background:
+        radial-gradient(circle at 20% 30%, #ff4fd8 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, #6c2cff 0%, transparent 45%),
+        linear-gradient(135deg, #120018, #2b0036, #3a004d);
+    overflow: hidden;
+}
+
+/* Add animated particles to join page */
+.join-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(#ff66c4 1px, transparent 1px),
+        radial-gradient(#8f5cff 1px, transparent 1px);
+    background-size: 60px 60px, 90px 90px;
+    animation: particleMove 20s linear infinite;
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(0.5px);
+}
+
+@keyframes particleMove {
+    from { background-position: 0 0, 0 0; }
+    to { background-position: 500px 300px, -400px -200px; }
 }
 
 .join-container {
     width: 100%;
     max-width: 500px;
     padding: 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .join-card {
-    background: transparent;
+    /* Make card slightly transparent to show background colors */
+    background: rgba(255, 255, 255, 0.95);
     padding: 50px;
     border-radius: 20px;
-    background-color: #ffffff;
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.3),
+        0 0 40px rgba(255, 79, 216, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .join-logo {
     text-align: center;
     font-size: 60px;
-    color: var(--primary);
+    color: white; /* Match galentines pink */
     margin-bottom: 10px;
+    text-shadow: 
+        0 0 10px rgba(255,255,255,0.3),
+        0 0 30px rgba(255,79,216,0.6);
 }
 
 .join-title {
     text-align: center;
-    color: var(--primary);
+    color: #ff4fd8; /* Match galentines pink */
     margin-bottom: 30px;
 }
-/* Mobile spacing: push hero content further below fixed header */
-@media (max-width: 600px) {
-    .hero {
-        padding-top: 300px; /* increased as requested */
-        padding-bottom: 60px;
-    }
 
-    .logo {
-        font-size: 2rem;
-    }
-
-    .hero-title {
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-
-    .placeholder-image {
-        margin-top: 120px;
-    }
+/* Optional: Add glow effect to button to match galentines style */
+.join-page .btn-large {
+    display: inline-block;
+            background: linear-gradient(135deg, #ff4fd8, #7b2cff);
+            border: none;
+            padding: 18px 50px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 0 20px rgba(255, 79, 216, 0.6),
+                0 0 40px rgba(123, 44, 255, 0.4);
+            animation: floatingGlow 3s ease-in-out infinite;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            margin-top: 15px;
+            margin-bottom: 50px;
 }
 
+.join-page .btn-large:hover {
+     transform: scale(1.08) translateY(-5px);
+            box-shadow:
+                0 0 10px rgba(255, 79, 216, 0.9),
+                0 0 20px rgba(123, 44, 255, 0.7),
+                inset 0 0 20px rgba(255,255,255,0.2);
+            letter-spacing: 1px;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+    .join-card {
+        padding: 30px 20px;
+        background: rgba(255, 255, 255, 0.98); /* Slightly more opaque on mobile */
+    }
+}
 /* Avatar Customizer */
 .avatar-page {
     padding: 40px 20px;
@@ -4268,5 +4327,29 @@ a.btn-large {
 
     h1, h2, h3 {
         line-height: 1.2;
+    }
+}
+/* Super Admin Badge */
+.super-admin-badge {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, gold, #ffd700);
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+    z-index: 10000;
+    animation: superAdminPulse 2s ease-in-out infinite;
+}
+
+@keyframes superAdminPulse {
+    0%, 100% {
+        box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 10px 40px rgba(255, 215, 0, 0.8);
     }
 }

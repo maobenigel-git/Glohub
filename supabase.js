@@ -301,7 +301,7 @@ function createMockSupabase() {
     // Seed demo data if database is empty
     function seedDemoDataIfEmpty() {
         const db = loadDB();
-        const hasData = (db.clients && db.clients.length) || (db.sessions && db.sessions.length) || (db.questions && db.questions.length);
+        const hasData = (db.clients && db.clients.length) || (db.sessions && db.sessions.length) || (db.questions && db.questions.length) || (db.super_admins && db.super_admins.length);
         if (hasData) return;
 
         const now = new Date().toISOString();
@@ -350,6 +350,19 @@ function createMockSupabase() {
                 client_id: 'client_demo',
                 amount: 649,
                 status: 'completed',
+                created_at: now
+            }
+        ];
+
+        // Seed a default super admin for local/mock use
+        db.super_admins = [
+            {
+                id: 'super_demo_1',
+                name: 'GloHub Super',
+                super_code: 'SUPERADMIN',
+                // NOTE: In production passwords should be hashed. This is plaintext for local demo only.
+                password: 'superpass',
+                is_active: true,
                 created_at: now
             }
         ];

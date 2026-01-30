@@ -53,7 +53,7 @@
     <div class="auth-container">
         <h1 class="auth-logo" style="font-family: 'Brush Script MT', cursive; font-size: 70px; color:#8e0038;">GloHub</h1>
         <div class="auth-card">
-            <p class="auth-title">Welcome Back, Queen!</p>
+            <p class="auth-title">Welcome, Queen!</p>
             <p class="auth-subtitle">Enter your admin code to access your dashboard</p>
             
             <form id="adminLoginForm" class="auth-form">
@@ -73,10 +73,10 @@
             </form>
             
             <div class="auth-footer">
-                <a href="index.html#purchase" class="link-primary">Don't have an admin code yet?</a>
+                <a href="galentines.html" class="link-primary">Don't have an admin code yet?</a>
             </div>
             
-            <a href="index.html" class="back-link"> Back to Home</a>
+            <a href="index.html" class="back-link">Back to Home</a>
         </div>
     </div>
 
@@ -90,6 +90,31 @@
             const code = document.getElementById('adminCode').value.trim();
             
             try {
+                // FIRST: Check if it's a super admin code
+                const { data: superAdmin, error: superError } = await supabase
+                    .from('super_admins')
+                    .select('*')
+                    .eq('super_code', code)
+                    .eq('is_active', true)
+                    .single();
+
+                if (superAdmin) {
+                    // SUPER ADMIN LOGIN - Grant full access
+                    sessionStorage.setItem('isSuperAdmin', 'true');
+                    sessionStorage.setItem('superAdminCode', code);
+                    sessionStorage.setItem('superAdminId', superAdmin.id);
+                    sessionStorage.setItem('superAdminName', superAdmin.name);
+                    sessionStorage.setItem('adminCode', code); // For compatibility
+                    sessionStorage.setItem('clientId', 'super-admin-global'); // Placeholder
+                    
+                    showSuccess('👑 Super Admin Access Granted!');
+                    setTimeout(() => {
+                        window.location.href = 'admin-dashboard.html';
+                    }, 1000);
+                    return;
+                }
+
+                // SECOND: Check regular client admin codes
                 const { data, error } = await supabase
                     .from('clients')
                     .select('*')
@@ -101,12 +126,14 @@
                     return;
                 }
 
-                // Store admin session
+                // Regular admin login
                 sessionStorage.setItem('adminCode', code);
                 sessionStorage.setItem('clientId', data.id);
+                sessionStorage.setItem('isSuperAdmin', 'false');
                 
                 window.location.href = 'admin-dashboard.html';
             } catch (err) {
+                console.error('Login error:', err);
                 showError('Login failed. Please try again.');
             }
         });
@@ -114,6 +141,27 @@
         function showError(message) {
             errorMsg.textContent = message;
             errorMsg.style.display = 'block';
+            errorMsg.style.background = '#f8d7da';
+            errorMsg.style.color = '#721c24';
+            errorMsg.style.border = '2px solid #f5c6cb';
+            errorMsg.style.padding = '12px';
+            errorMsg.style.borderRadius = '8px';
+            errorMsg.style.marginTop = '15px';
+        }
+
+        function showSuccess(message) {
+            errorMsg.textContent = message;
+            errorMsg.style.display = 'block';
+            errorMsg.style.background = 'linear-gradient(135deg, gold, #ffd700)';
+            errorMsg.style.color = '#000';
+            errorMsg.style.border = '2px solid gold';
+            errorMsg.style.padding = '15px';
+            errorMsg.style.borderRadius = '10px';
+            errorMsg.style.marginTop = '15px';
+            errorMsg.style.fontWeight = '700';
+            errorMsg.style.fontSize = '16px';
+            errorMsg.style.textAlign = 'center';
+            errorMsg.style.boxShadow = '0 5px 20px rgba(255, 215, 0, 0.5)';
         }
     </script>
 </body>

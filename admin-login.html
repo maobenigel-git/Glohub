@@ -10,27 +10,34 @@
     <style>
         /* Blurred background image */
         .auth-page {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        position: relative;
+        
+        /* Same gradient background as galentines hero */
+        background:
+            radial-gradient(circle at 20% 30%, #ff4fd8 0%, transparent 40%),
+            radial-gradient(circle at 80% 70%, #6c2cff 0%, transparent 45%),
+            linear-gradient(135deg, #120018, #2b0036, #3a004d);
+        overflow: hidden;
         }
 
         .auth-page::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('assets/landing\ page\ background.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            filter: blur(2px);
-            z-index: -1;
-        }
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            radial-gradient(#ff66c4 1px, transparent 1px),
+            radial-gradient(#8f5cff 1px, transparent 1px);
+        background-size: 60px 60px, 90px 90px;
+        animation: particleMove 20s linear infinite;
+        opacity: 0.35;
+        pointer-events: none;
+        z-index: 0;
+        filter: blur(0.5px);
+    }
 
         /* Add overlay for better text readability */
         .auth-page::after {
@@ -43,31 +50,49 @@
             z-index: -1;
         }
 
+        @keyframes particleMove {
+    from { background-position: 0 0, 0 0; }
+    to { background-position: 500px 300px, -400px -200px; }
+}
+
         /* Enhance auth card to stand out */
         .auth-card {
-            background: white;
+            background: transparent;
+        }
+
+        /* Center the login button */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .auth-form .btn-large {
+            width: auto;
+            min-width: 200px;
         }
     </style>
 </head>
 <body class="auth-page">
     <div class="auth-container">
-        <h1 class="auth-logo" style="font-family: 'Brush Script MT', cursive; font-size: 70px; color:#8e0038;">GloHub</h1>
-        <div class="auth-card">
-            <p class="auth-title">Welcome, Queen!</p>
-            <p class="auth-subtitle">Enter your admin code to access your dashboard</p>
-            
+        <h1 class="auth-logo" style="font-family: 'Brush Script MT', cursive; font-size: 70px; color:white;">Admin login</h1>
+        <div class="auth-card">            
             <form id="adminLoginForm" class="auth-form">
                 <div class="form-group">
-                    <label for="adminCode">Admin Code</label>
                     <input 
                         type="text" 
                         id="adminCode" 
                         placeholder="Enter your admin code" 
                         required
-                        autocomplete="off">
+                        autocomplete="off"
+                        style="text-align: center; width: 400px;">
                 </div>
                 
-                <button type="submit" class="btn-large">Login</button>
+                <button type="submit" class="btn-large" style=" box-shadow:
+                0 0 20px rgba(255, 79, 216, 0.6),
+                0 0 40px rgba(123, 44, 255, 0.4);
+            animation: floatingGlow 3s ease-in-out infinite;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); background: linear-gradient(135deg, #ff4fd8, #7b2cff);">Login</button>
                 
                 <div id="errorMessage" class="error-message" style="display: none;"></div>
             </form>
@@ -76,11 +101,7 @@
                 <a href="galentines.html" class="link-primary">Don't have an admin code yet?</a>
             </div>
             
-<<<<<<< HEAD
-            <a href="galentines.html" class="back-link"> Back to Home</a>
-=======
             <a href="galentines.html" class="back-link">Back to Home</a>
->>>>>>> refs/remotes/origin/main
         </div>
     </div>
 

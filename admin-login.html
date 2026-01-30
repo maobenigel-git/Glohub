@@ -80,61 +80,46 @@
         </div>
     </div>
 
-    <script src="supabase.js"></script>
-    <script>
+            <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="supabase.js"></script>
+
+        <script>
         const form = document.getElementById('adminLoginForm');
         const errorMsg = document.getElementById('errorMessage');
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+
             const code = document.getElementById('adminCode').value.trim();
-            
+
             try {
-                // FIRST: Check if it's a super admin code
-                const { data: superAdmin, error: superError } = await supabase
-                    .from('super_admins')
-                    .select('*')
-                    .eq('super_code', code)
-                    .eq('is_active', true)
-                    .single();
+            // ✅ SUPER ADMIN CHECK
+            const { data: superAdmin, error: superError } = await supabase
+                .from('super_admins')
+                .select('*')
+                .eq('super_code', code)
+                .eq('is_active', true)
+                .single();
 
-                if (superAdmin) {
-                    // SUPER ADMIN LOGIN - Grant full access
-                    sessionStorage.setItem('isSuperAdmin', 'true');
-                    sessionStorage.setItem('superAdminCode', code);
-                    sessionStorage.setItem('superAdminId', superAdmin.id);
-                    sessionStorage.setItem('superAdminName', superAdmin.name);
-                    sessionStorage.setItem('adminCode', code); // For compatibility
-                    sessionStorage.setItem('clientId', 'super-admin-global'); // Placeholder
-                    
-                    showSuccess('👑 Super Admin Access Granted!');
-                    setTimeout(() => {
-                        window.location.href = 'admin-dashboard.html';
-                    }, 1000);
-                    return;
-                }
+            // 🔒 Handle real DB errors only
+            if (superError && superError.code !== 'PGRST116') {
+                throw superError;
+            }
 
-                // SECOND: Check regular client admin codes
-                const { data, error } = await supabase
-                    .from('clients')
-                    .select('*')
-                    .eq('admin_code', code)
-                    .single();
+            // ❌ No matching admin
+            if (!superAdmin) {
+                throw new Error('Invalid admin code');
+            }
 
-                if (error || !data) {
-                    showError('Invalid admin code. Please check and try again.');
-                    return;
-                }
+            // ✅ SUCCESS
+            sessionStorage.setItem('superAdminId', superAdmin.id);
+            sessionStorage.setItem('isSuperAdmin', 'true');
 
-                // Regular admin login
-                sessionStorage.setItem('adminCode', code);
-                sessionStorage.setItem('clientId', data.id);
-                sessionStorage.setItem('isSuperAdmin', 'false');
-                
-                window.location.href = 'admin-dashboard.html';
+            window.location.href = 'admin-dashboard.html';
+
             } catch (err) {
-                console.error('Login error:', err);
-                showError('Login failed. Please try again.');
+            console.error('Login error:', err);
+            showError(err.message || 'Login failed. Please try again.');
             }
         });
 
@@ -148,21 +133,8 @@
             errorMsg.style.borderRadius = '8px';
             errorMsg.style.marginTop = '15px';
         }
+        </script>
 
-        function showSuccess(message) {
-            errorMsg.textContent = message;
-            errorMsg.style.display = 'block';
-            errorMsg.style.background = 'linear-gradient(135deg, gold, #ffd700)';
-            errorMsg.style.color = '#000';
-            errorMsg.style.border = '2px solid gold';
-            errorMsg.style.padding = '15px';
-            errorMsg.style.borderRadius = '10px';
-            errorMsg.style.marginTop = '15px';
-            errorMsg.style.fontWeight = '700';
-            errorMsg.style.fontSize = '16px';
-            errorMsg.style.textAlign = 'center';
-            errorMsg.style.boxShadow = '0 5px 20px rgba(255, 215, 0, 0.5)';
-        }
-    </script>
+        
 </body>
 </html>
